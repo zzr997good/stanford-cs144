@@ -4,13 +4,26 @@
 #include <iostream>
 #include <span>
 #include <string>
-
 using namespace std;
 
 void get_URL( const string& host, const string& path )
 {
-  cerr << "Function called: get_URL(" << host << ", " << path << ")\n";
-  cerr << "Warning: get_URL() has not been implemented yet.\n";
+  // cerr << "Function called: get_URL(" << host << ", " << path << ")\n";
+  // cerr << "Warning: get_URL() has not been implemented yet.\n";
+  TCPSocket sock;
+  Address server(host,"http");
+  // build connection with the server
+  sock.connect(server);
+  // send request to the server
+  string requst="GET "+path+" HTTP/1.1\r\n"+"Host: "+host+"\r\n"+"Connection: close\r\n"+"\r\n";
+  sock.write(requst);
+  // receive response from the server
+  string response;
+  while(!sock.eof()){
+    sock.read(response);
+    cout<<response;
+  }
+  sock.close();
 }
 
 int main( int argc, char* argv[] )
@@ -21,6 +34,7 @@ int main( int argc, char* argv[] )
     }
 
     auto args = span( argv, argc );
+    
 
     // The program takes two command-line arguments: the hostname and "path" part of the URL.
     // Print the usage message unless there are these two arguments (plus the program name
