@@ -66,6 +66,10 @@ private:
   // IP data waiting for ARP reply to be sent
   std::unordered_map<IPAddr32, InternetDatagram> data_wait_for_ARP_reply_ {};
 
+  void send_ARP_request( const InternetDatagram& dgram, const IPAddr32& next_hop_ip );
+  void send_Ethernet_frame( const InternetDatagram& dgram, const IPAddr32& next_hop_ip );
+  void send_ARP_reply( const IPAddr32& target_ip, const EthernetAddress& target_ethernet_address );
+
 public:
   // Construct a network interface with given Ethernet (network-access-layer) and IP (internet-layer)
   // addresses
@@ -90,7 +94,4 @@ public:
   // Called periodically when time elapses
   void tick( size_t ms_since_last_tick );
 
-  void send_ARP_request( const InternetDatagram& dgram, const IPAddr32& next_hop_ip );
-  void send_Ethernet_frame( const InternetDatagram& dgram, const IPAddr32& next_hop_ip );
-  void send_ARP_reply( const IPAddr32& target_ip, const EthernetAddress& target_ethernet_address );
 };
